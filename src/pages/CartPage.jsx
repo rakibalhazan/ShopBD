@@ -60,44 +60,7 @@ const PROMOS   = { SHOPBD20:"20", BD10:"10", WELCOME:"15" };
 
 function Navbar({ count, scrolled, menuOpen, setMenuOpen }) {
   return (
-    <nav className={scrolled ? "glass-nav" : ""} style={{
-      position:"fixed", top:0, left:0, right:0, zIndex:200, padding:"0 28px",
-      background: scrolled ? undefined : "rgba(247,247,249,.95)",
-      borderBottom: "1px solid rgba(0,0,0,.07)", transition:"all .35s ease",
-    }}>
-      <div style={{maxWidth:1200,margin:"0 auto",height:60,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <span style={{fontSize:21,fontWeight:800,color:"#1C1C1E",letterSpacing:"-0.6px"}}>
-          Shop<span style={{color:"#006FD6"}}>BD</span>
-        </span>
-        <div className="hide-sm" style={{display:"flex",gap:30}}>
-          {["Home","Products","About","Contact"].map(l=>(
-            <span key={l} className="nav-lnk" style={{fontSize:14,fontWeight:500,color:l==="Cart"?"#006FD6":"#1C1C1E"}}>{l}</span>
-          ))}
-        </div>
-        <div style={{display:"flex",gap:7,alignItems:"center"}}>
-          <button className="tap" style={{width:38,height:38,borderRadius:19,background:"rgba(0,0,0,.05)",display:"flex",alignItems:"center",justifyContent:"center",color:"#1C1C1E",position:"relative"}}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M1 1.5H3.2L4.8 10H13L15 4H5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <circle cx="7" cy="13.5" r="1.5" fill="currentColor"/>
-              <circle cx="12" cy="13.5" r="1.5" fill="currentColor"/>
-            </svg>
-            {count>0&&<span style={{position:"absolute",top:-2,right:-2,minWidth:17,height:17,padding:"0 4px",borderRadius:9,background:"#FF3B30",color:"white",fontSize:9,fontWeight:700,display:"flex",alignItems:"center",justifyContent:"center",border:"2px solid #F7F7F9"}}>{count}</span>}
-          </button>
-          <button className="tap" style={{width:38,height:38,borderRadius:19,background:"rgba(0,0,0,.05)",display:"flex",alignItems:"center",justifyContent:"center",color:"#1C1C1E"}} onClick={()=>setMenuOpen(v=>!v)}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              {menuOpen?<path d="M2 2L14 14M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>:<path d="M2 4H14M2 8H14M2 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>}
-            </svg>
-          </button>
-        </div>
-      </div>
-      {menuOpen&&(
-        <div style={{background:"rgba(247,247,249,.97)",backdropFilter:"blur(28px)",padding:"6px 28px 20px",borderTop:"1px solid rgba(0,0,0,.06)"}}>
-          {["Home","Products","About","Contact"].map(l=>(
-            <div key={l} onClick={()=>setMenuOpen(false)} style={{padding:"13px 0",fontSize:16,fontWeight:500,color:"#1C1C1E",borderBottom:"1px solid rgba(0,0,0,.05)",cursor:"pointer"}}>{l}</div>
-          ))}
-        </div>
-      )}
-    </nav>
+    <SharedNavbar />
   );
 }
 
