@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
+import SharedNavbar from '../components/SharedNavbar';
 
 /* ─────────────────────────────────────────
    GLOBAL STYLES
