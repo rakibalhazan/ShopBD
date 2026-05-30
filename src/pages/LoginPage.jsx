@@ -188,12 +188,7 @@ export default function LoginPage() {
       <div style={{minHeight:"100vh",background:"radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,111,214,.06) 0%, transparent 65%), #F7F7F9",display:"flex",flexDirection:"column"}}>
 
         {/* Nav bar */}
-        <nav style={{padding:"0 28px",borderBottom:"1px solid rgba(0,0,0,.07)",background:"rgba(247,247,249,.9)",backdropFilter:"blur(20px)",height:58,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
-          <span style={{fontSize:21,fontWeight:800,color:"#1C1C1E",letterSpacing:"-0.6px"}}>
-            Shop<span style={{color:"#006FD6"}}>BD</span>
-          </span>
-          <span style={{fontSize:13,color:"#8E8E93"}}>🔒 Secure &amp; Encrypted</span>
-        </nav>
+        <SharedNavbar />
 
         {/* Main */}
         <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",padding:"28px 20px 48px"}}>
