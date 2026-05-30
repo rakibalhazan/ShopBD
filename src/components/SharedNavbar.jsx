@@ -2,16 +2,58 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const NAV_STYLE = `
-  .sn-link { transition: color .18s ease; cursor: pointer; user-select: none; }
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
+
+  .sn-wrap {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .sn-link {
+    transition: color .18s ease;
+    cursor: pointer;
+    user-select: none;
+  }
   .sn-link:hover { color: #006FD6 !important; }
-  .sn-tap { cursor: pointer; border: none; outline: none; transition: transform .13s ease, opacity .14s ease; background: none; }
+
+  .sn-tap {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0;
+    transition: transform .13s ease, opacity .14s ease;
+  }
   .sn-tap:hover  { opacity: .88; }
   .sn-tap:active { transform: scale(.95); }
+
   .sn-glass {
     backdrop-filter: blur(28px) saturate(200%) !important;
     -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
-    background: rgba(247,247,249,.9) !important;
+    background: rgba(247,247,249,.92) !important;
     border-bottom: 1px solid rgba(0,0,0,.07) !important;
+  }
+
+  /* Desktop links — visible on large screens, hidden on mobile */
+  .sn-desktop {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .sn-login-btn {
+    display: inline-flex;
+  }
+
+  @media (max-width: 768px) {
+    .sn-desktop    { display: none !important; }
+    .sn-login-btn  { display: none !important; }
+  }
+
+  /* Mobile dropdown animation */
+  @keyframes sn-drop {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0);    }
+  }
+  .sn-mobile-menu {
+    animation: sn-drop .25s cubic-bezier(.22,1,.36,1);
   }
 `;
 
@@ -34,7 +76,7 @@ export default function SharedNavbar({ cartCount = 0 }) {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  // Close mobile menu on route change
+  // Close mobile menu whenever the route changes
   useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
   const go = (path) => { navigate(path); setMenuOpen(false); };
@@ -45,39 +87,43 @@ export default function SharedNavbar({ cartCount = 0 }) {
   return (
     <>
       <style>{NAV_STYLE}</style>
+
       <nav
-        className={scrolled ? "sn-glass" : ""}
+        className={`sn-wrap ${scrolled ? "sn-glass" : ""}`}
         style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
           padding: "0 28px",
           background: scrolled ? undefined : "rgba(247,247,249,.95)",
           borderBottom: scrolled ? undefined : "1px solid rgba(0,0,0,.07)",
           transition: "all .35s ease",
-          fontFamily: "'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif",
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", height: 60,
-          display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{
+          maxWidth: 1200, margin: "0 auto", height: 60,
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
 
           {/* ── Logo ── */}
           <span
             onClick={() => go("/")}
-            style={{ fontSize: 21, fontWeight: 800, color: "#1C1C1E",
-              letterSpacing: "-0.6px", cursor: "pointer", userSelect: "none" }}
+            style={{
+              fontSize: 21, fontWeight: 800, color: "#1C1C1E",
+              letterSpacing: "-0.6px", cursor: "pointer", userSelect: "none",
+            }}
           >
             Shop<span style={{ color: "#006FD6" }}>BD</span>
           </span>
 
-          {/* ── Desktop links ── */}
-          <div style={{ display: "flex", gap: 28, alignItems: "center",
-            "@media(maxWidth:640px)": { display: "none" } }}>
+          {/* ── Desktop nav links (hidden on mobile via CSS class) ── */}
+          <div className="sn-desktop">
             {LINKS.map(({ label, path }) => (
               <span
                 key={label}
                 className="sn-link"
                 onClick={() => go(path)}
                 style={{
-                  fontSize: 14, fontWeight: isActive(path) ? 700 : 500,
+                  fontSize: 14,
+                  fontWeight: isActive(path) ? 700 : 500,
                   color: isActive(path) ? "#006FD6" : "#1C1C1E",
                   borderBottom: isActive(path) ? "2px solid #006FD6" : "2px solid transparent",
                   paddingBottom: 2,
@@ -88,14 +134,16 @@ export default function SharedNavbar({ cartCount = 0 }) {
             ))}
           </div>
 
-          {/* ── Icons ── */}
+          {/* ── Right icons ── */}
           <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
 
             {/* Search */}
-            <button className="sn-tap"
-              style={{ width: 38, height: 38, borderRadius: 19,
-                background: "rgba(0,0,0,.05)", display: "flex",
-                alignItems: "center", justifyContent: "center", color: "#1C1C1E" }}>
+            <button className="sn-tap" style={{
+              width: 38, height: 38, borderRadius: 19,
+              background: "rgba(0,0,0,.05)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#1C1C1E",
+            }}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5"/>
                 <path d="M11 11L14.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -103,16 +151,20 @@ export default function SharedNavbar({ cartCount = 0 }) {
             </button>
 
             {/* Cart */}
-            <button className="sn-tap"
+            <button
+              className="sn-tap"
               onClick={() => go("/cart")}
-              style={{ width: 38, height: 38, borderRadius: 19,
-                background: "rgba(0,0,0,.05)", display: "flex",
-                alignItems: "center", justifyContent: "center",
-                color: "#1C1C1E", position: "relative" }}>
+              style={{
+                width: 38, height: 38, borderRadius: 19,
+                background: "rgba(0,0,0,.05)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: "#1C1C1E", position: "relative",
+              }}
+            >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M1 1.5H3.2L4.8 10H13L15 4H5.5"
                   stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="7" cy="13.5" r="1.5" fill="currentColor"/>
+                <circle cx="7"  cy="13.5" r="1.5" fill="currentColor"/>
                 <circle cx="12" cy="13.5" r="1.5" fill="currentColor"/>
               </svg>
               {cartCount > 0 && (
@@ -129,24 +181,31 @@ export default function SharedNavbar({ cartCount = 0 }) {
               )}
             </button>
 
-            {/* Login */}
-            <button className="sn-tap"
+            {/* Login button — hidden on mobile (CSS class) */}
+            <button
+              className="sn-tap sn-login-btn"
               onClick={() => go("/login")}
               style={{
                 padding: "8px 16px", borderRadius: 22,
                 background: isActive("/login") ? "#006FD6" : "rgba(0,0,0,.05)",
                 color: isActive("/login") ? "white" : "#1C1C1E",
                 fontSize: 13, fontWeight: 600,
-              }}>
+              }}
+            >
               Login
             </button>
 
-            {/* Hamburger */}
-            <button className="sn-tap"
-              style={{ width: 38, height: 38, borderRadius: 19,
-                background: "rgba(0,0,0,.05)", display: "flex",
-                alignItems: "center", justifyContent: "center", color: "#1C1C1E" }}
-              onClick={() => setMenuOpen(v => !v)}>
+            {/* Hamburger — always visible */}
+            <button
+              className="sn-tap"
+              onClick={() => setMenuOpen(v => !v)}
+              style={{
+                width: 38, height: 38, borderRadius: 19,
+                background: menuOpen ? "rgba(0,111,214,.1)" : "rgba(0,0,0,.05)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: menuOpen ? "#006FD6" : "#1C1C1E",
+              }}
+            >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 {menuOpen
                   ? <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -156,28 +215,55 @@ export default function SharedNavbar({ cartCount = 0 }) {
           </div>
         </div>
 
-        {/* ── Mobile dropdown ── */}
+        {/* ── Mobile dropdown menu ── */}
         {menuOpen && (
-          <div style={{
-            background: "rgba(247,247,249,.97)", backdropFilter: "blur(28px)",
-            padding: "6px 28px 20px", borderTop: "1px solid rgba(0,0,0,.06)",
-          }}>
+          <div
+            className="sn-mobile-menu"
+            style={{
+              background: "rgba(247,247,249,.97)",
+              backdropFilter: "blur(28px)",
+              padding: "6px 28px 24px",
+              borderTop: "1px solid rgba(0,0,0,.06)",
+            }}
+          >
             {LINKS.map(({ label, path }) => (
-              <div key={label} onClick={() => go(path)}
+              <div
+                key={label}
+                onClick={() => go(path)}
                 style={{
-                  padding: "14px 0", fontSize: 16, fontWeight: 500,
+                  padding: "14px 0",
+                  fontSize: 16,
+                  fontWeight: isActive(path) ? 700 : 500,
                   color: isActive(path) ? "#006FD6" : "#1C1C1E",
-                  borderBottom: "1px solid rgba(0,0,0,.05)", cursor: "pointer",
-                  fontFamily: "'DM Sans', sans-serif",
-                }}>
+                  borderBottom: "1px solid rgba(0,0,0,.05)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 {label}
-                {isActive(path) && <span style={{ marginLeft: 8, fontSize: 12 }}>●</span>}
+                {isActive(path) && (
+                  <span style={{
+                    width: 8, height: 8, borderRadius: 4,
+                    background: "#006FD6", display: "inline-block",
+                  }}/>
+                )}
               </div>
             ))}
-            <div onClick={() => go("/admin")}
-              style={{ padding: "14px 0", fontSize: 16, fontWeight: 500,
-                color: "#FF9500", cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif" }}>
+
+            {/* Admin link — tucked at the bottom */}
+            <div
+              onClick={() => go("/admin")}
+              style={{
+                padding: "14px 0",
+                fontSize: 14,
+                fontWeight: 500,
+                color: "#8E8E93",
+                cursor: "pointer",
+                marginTop: 4,
+              }}
+            >
               ⚙️ Admin Panel
             </div>
           </div>
@@ -186,3 +272,4 @@ export default function SharedNavbar({ cartCount = 0 }) {
     </>
   );
 }
+
