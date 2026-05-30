@@ -71,32 +71,7 @@ const DELIVERY_FEE = 60;
 /* ── NAVBAR ── */
 function Navbar({ scrolled, menuOpen, setMenuOpen }) {
   return (
-    <nav className={scrolled?"glass-nav":""} style={{
-      position:"fixed",top:0,left:0,right:0,zIndex:200,padding:"0 28px",
-      background:scrolled?undefined:"rgba(247,247,249,.95)",
-      borderBottom:"1px solid rgba(0,0,0,.07)",transition:"all .35s ease",
-    }}>
-      <div style={{maxWidth:1200,margin:"0 auto",height:60,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <span style={{fontSize:21,fontWeight:800,color:"#1C1C1E",letterSpacing:"-0.6px"}}>
-          Shop<span style={{color:"#006FD6"}}>BD</span>
-        </span>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <span style={{fontSize:13,color:"#8E8E93"}}>🔒 Secure Checkout</span>
-          <button className="tap" style={{width:38,height:38,borderRadius:19,background:"rgba(0,0,0,.05)",display:"flex",alignItems:"center",justifyContent:"center",color:"#1C1C1E"}} onClick={()=>setMenuOpen(v=>!v)}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              {menuOpen?<path d="M2 2L14 14M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>:<path d="M2 4H14M2 8H14M2 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>}
-            </svg>
-          </button>
-        </div>
-      </div>
-      {menuOpen&&(
-        <div style={{background:"rgba(247,247,249,.97)",backdropFilter:"blur(28px)",padding:"6px 28px 20px",borderTop:"1px solid rgba(0,0,0,.06)"}}>
-          {["Home","Products","About","Contact"].map(l=>(
-            <div key={l} onClick={()=>setMenuOpen(false)} style={{padding:"13px 0",fontSize:16,fontWeight:500,color:"#1C1C1E",borderBottom:"1px solid rgba(0,0,0,.05)",cursor:"pointer"}}>{l}</div>
-          ))}
-        </div>
-      )}
-    </nav>
+    <SharedNavbar />
   );
 }
 
