@@ -1,0 +1,29 @@
+# ─────────────────────────────────────────
+#  ShopBD Backend — Environment Variables
+#  Copy this file to .env and fill values
+# ─────────────────────────────────────────
+
+# MongoDB Atlas connection string
+MONGO_URI=mongodb+srv://shopbd:<db_password>@shopbd-cluster.p98tgof.mongodb.net/?appName=shopbd-cluster
+
+# JWT — use a long random string (keep secret!)
+JWT_SECRET=shopbd_super_secret_key_change_this_in_production
+JWT_EXPIRES_IN=30d
+
+# Gmail — for order notifications to rakibalhazan@gmail.com
+# IMPORTANT: Use an App Password, NOT your real Gmail password.
+# Steps: myaccount.google.com → Security → 2-Step Verification → App Passwords
+GMAIL_USER=rakibalhazan@gmail.com
+GMAIL_APP_PASSWORD=njei tput icux cvhb
+
+# Admin account (auto-created on first server start)
+ADMIN_NAME=ShopBD Admin
+ADMIN_EMAIL=rakibalhazan@gmail.com
+ADMIN_PASSWORD=ShopBD@Admin2025
+
+# Server
+PORT=5000
+NODE_ENV=production
+
+# Your deployed frontend URL (for CORS)
+CLIENT_URL=https://shopex-bd.vercel.app
